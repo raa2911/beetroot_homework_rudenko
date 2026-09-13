@@ -1,8 +1,11 @@
 #include <Arduino.h>
+#include <TimeLib.h>
 
 #ifndef LED_BUILTIN
 #define LED_BUILTIN 2
 #endif
+
+int lastSecond = -1;
 
 void setup() {
     pinMode(LED_BUILTIN, OUTPUT);
@@ -10,10 +13,19 @@ void setup() {
 }
 
 void loop() {
-    digitalWrite(LED_BUILTIN, HIGH);
-    Serial.println("LED ON");
-    delay(1000);
-    digitalWrite(LED_BUILTIN, LOW);
-    Serial.println("LED OFF");
-    delay(1000);
+    int currentSecond = second();
+    if (currentSecond != lastSecond) {
+        lastSecond = currentSecond;
+        if (currentSecond % 2 == 0) {
+            digitalWrite(LED_BUILTIN, HIGH);
+            Serial.print("Second: ");
+            Serial.print(currentSecond);
+            Serial.println(" - LED ON");
+        } else {
+            digitalWrite(LED_BUILTIN, LOW);
+            Serial.print("Second: ");
+            Serial.print(currentSecond);
+            Serial.println(" - LED OFF");
+        }
+    }
 }
