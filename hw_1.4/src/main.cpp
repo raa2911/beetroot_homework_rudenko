@@ -3,7 +3,7 @@
 
 constexpr int LED_BLUE_PIN = 15;
 constexpr int LED_RED_PIN = 16;
-constexpr int BUTTON_PIN = 16;
+constexpr int BUTTON_PIN = 21;
 
 int lastSecond = -1;
 
@@ -11,6 +11,7 @@ void setup() {
     pinMode(LED_BLUE_PIN, OUTPUT);
     pinMode(LED_RED_PIN, OUTPUT);
     Serial.begin(115200);
+    delay(1000);
 }
 
 void mode1();
