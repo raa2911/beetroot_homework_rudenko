@@ -14,9 +14,6 @@ constexpr int DELAY_BOOT_BUTTON = 1000;
 static unsigned long lastButtonActionMillis = 0;
 static unsigned long lastLedActionMillis = 0;
 
-static unsigned int lastButtonState;
-static unsigned int lastBootButtonState;
-
 static Mode currentMode = Undefined;
 
 void setup() {
@@ -27,16 +24,14 @@ void setup() {
     pinMode(LED_RED_PIN, OUTPUT);
     pinMode(BUTTON_PIN, INPUT_PULLUP);
     pinMode(BOOT_BUTTON_PIN, INPUT);
-
-    lastButtonState = digitalRead(BUTTON_PIN);
-    lastBootButtonState = digitalRead(BOOT_BUTTON_PIN);
 }
 
 static void mode1(unsigned long currentMillis);
 
 static void mode2(unsigned long currentMillis);
 
-static void resetLeds() {
+static void resetLedsState() {
+    lastLedActionMillis = 0;
     digitalWrite(LED_BLUE_PIN, LOW);
     digitalWrite(LED_RED_PIN, LOW);
 }
@@ -44,33 +39,19 @@ static void resetLeds() {
 void loop() {
     const unsigned long currentMillis = millis();
 
-    // button debounce
     if (currentMillis - lastButtonActionMillis >= DEBOUNCE_MILLIS) {
-
-        const int currentButtonState = digitalRead(BUTTON_PIN);
-        if (currentButtonState != lastButtonState && currentMode != Mode1) {
-            Serial.print("External button state changed\n");
-            lastButtonState = currentButtonState;
+        if (digitalRead(BUTTON_PIN) == LOW && currentMode != Mode1) {
+            Serial.print("External button state pressed");
             lastButtonActionMillis = currentMillis;
-            lastLedActionMillis = 0;
-            if (currentButtonState == LOW) {
-                Serial.print("Turn on mode 1\n");
-                resetLeds();
-                currentMode = Mode1;
-            }
-        }
-
-        const int currentBootButtonState = digitalRead(BOOT_BUTTON_PIN);
-        if (currentBootButtonState != lastBootButtonState && currentMode != Mode2) {
-            Serial.print("Boot button state changed\n");
-            lastBootButtonState = currentBootButtonState;
+            resetLedsState();
+            Serial.print("Turn on mode 1\n");
+            currentMode = Mode1;
+        } else if (digitalRead(BOOT_BUTTON_PIN) == LOW && currentMode != Mode2) {
+            Serial.print("Boot button state pressed");
             lastButtonActionMillis = currentMillis;
-            lastLedActionMillis = 0;
-            if (currentBootButtonState == HIGH) {
-                Serial.print("Turn on mode 2\n");
-                resetLeds();
-                currentMode = Mode2;
-            }
+            resetLedsState();
+            Serial.print("Turn on mode 2\n");
+            currentMode = Mode2;
         }
     }
 
