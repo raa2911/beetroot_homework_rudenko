@@ -31,4 +31,20 @@ pio run -t upload && pio device monitor
 
 ## Результат виконання
 
-<!-- Вставте сюди вивід Serial Monitor і фото/відео плати -->
+![ESP32-S3 з LED на макетній платі](images/hw2.1.jpg)
+
+Serial Monitor:
+
+```log
+loop: avg=2.09us min=2us max=10us
+loop: avg=2.10us min=2us max=10us
+loop: avg=2.09us min=2us max=10us
+loop: avg=2.09us min=2us max=10us
+loop: avg=2.09us min=2us max=10us
+loop: avg=2.09us min=2us max=10us
+loop: avg=2.09us min=2us max=10us
+loop: avg=2.09us min=2us max=10us
+loop: avg=2.10us min=2us max=10us
+loop: avg=2.09us min=2us max=10us
+loop: avg=2.09us min=2us max=10us
+```
