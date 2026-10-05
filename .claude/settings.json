@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "esp32-ai-agent-skill@anthropic-plugin-directory": true
+  }
+}
