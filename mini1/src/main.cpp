@@ -20,12 +20,12 @@ constexpr uint32_t DEBOUNCE_MILLIS = 50;
 // uint16_t відповідає діапазону 12-бітного коду ADC.
 constexpr uint16_t LIGHT_THRESHOLD_RAW = 1800;
 
-static unsigned long lastButtonActionMillis = 0;
-static unsigned long lastSampleMillis = 0;
-static int lastBootButtonState = HIGH;
+static uint32_t lastButtonActionMillis = 0;
+static uint32_t lastSampleMillis = 0;
+static uint8_t lastBootButtonState = HIGH;
 static Mode currentMode = Mode1;
 
-static void mode1(unsigned long currentMillis);
+static void mode1(uint32_t currentMillis);
 
 static void mode2();
 
@@ -50,10 +50,10 @@ void setup() {
 
 // loop() перевіряє стан кнопки та виконує обраний режим без блокування через delay.
 void loop() {
-    const unsigned long currentMillis = millis();
+    const uint32_t currentMillis = millis();
 
     if (currentMillis - lastButtonActionMillis >= DEBOUNCE_MILLIS) {
-        const int currentBootButtonState = digitalRead(BOOT_BUTTON_PIN);
+        const uint8_t currentBootButtonState = digitalRead(BOOT_BUTTON_PIN);
         if (currentBootButtonState == LOW && lastBootButtonState == HIGH) {
             Serial.print("Boot button state pressed\n");
             lastButtonActionMillis = currentMillis;
@@ -86,7 +86,7 @@ void loop() {
 }
 
 // Режим 1: автоматичне керування реле за датчиком освітлення (LDR).
-static void mode1(const unsigned long currentMillis) {
+static void mode1(const uint32_t currentMillis) {
     if (currentMillis - lastSampleMillis >= SAMPLE_DELAY_MS) {
         lastSampleMillis = currentMillis;
 
